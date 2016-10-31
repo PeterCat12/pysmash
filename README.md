@@ -3,12 +3,9 @@ A python wrapper to smash.gg Developer API
 
 Smash.gg API: https://help.smash.gg/hc/en-us/articles/217471947-API-Access
 
-SmashGG's API is completely bananas. So if you see "crazy" manipulations to their responses it's due
-to their insanity. For instance, to get player information like player names, you have to query their bracket
-route with both parameters of `sets` and `entrants`. Just asking for `entrants` does NOT give you a players
-information. In addition when both parameters are set, this information gets dumped into a mysteriously named `mutations` field that holds `contactInfo`.
+This is still a work in progress, especially since Smash.gg's development API seems very nascent at the moment.
 
-I like smash.GG and what they do for the smash community but I hope they get their developers API into better shape soon.
+Test suite and examples on how to use it will follow soon.
 
 For large tournaments, you might want to avoid asking for a complete list of sets due to possible memory constraints.
 
