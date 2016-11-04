@@ -1,5 +1,4 @@
-import tournaments
-import brackets
+from pysmash import tournaments, brackets
 
 
 class SmashGG(object):

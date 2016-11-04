@@ -1,7 +1,4 @@
-# from pysmash2 import api, exceptions
-import api
-import brackets
-import utils
+from pysmash2 import api, brackets, utils
 
 TOURNAMENT_PREFIX = '/tournament/'
 EVENT_URL = '/event/'
