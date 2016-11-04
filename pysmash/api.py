@@ -1,4 +1,4 @@
-import exceptions
+from pysmash import exceptions
 import requests
 
 
