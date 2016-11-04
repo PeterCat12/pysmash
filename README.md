@@ -31,9 +31,11 @@ import pysmash
 
   # show a complete list of sets for a tournament (Might have memory issues for majors)
   sets = smash.tournament_show_sets("hidden-bosses-4-0")
+  print(sets)
 
   # show a complete list of players for a tournament (Might have memory issues for majors)
   players = smash.tournament_show_players("hidden-bosses-4-0")
+  print(players)
 ```
 
 See [smash.gg](https://help.smash.gg/hc/en-us/articles/217471947-API-Access) for full API documentation.
