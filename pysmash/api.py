@@ -1,4 +1,5 @@
-from pysmash import exceptions, requests
+from pysmash import exceptions
+import requests
 
 
 SMASHGG_API_URL = 'api.smash.gg'
