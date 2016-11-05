@@ -9,7 +9,7 @@ def merge_two_dicts(x, y):
 
 
 def _validate_query_params(params, valid_params, route_type):
-    """Validates query params for tournament requests"""
+    """Validates query params for Smash.gg requests"""
     for param in params:
         if param not in valid_params:
             error_msg = """
@@ -20,6 +20,7 @@ def _validate_query_params(params, valid_params, route_type):
 
 
 def get_subfield(_dict, field, subField):
+    """checks to see if a field in a dictionary exists, if it does, `.get` a specified subfield"""
     if _dict[field] is not None:
         return _dict[field].get(subField, '')
     return ''
