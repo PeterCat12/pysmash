@@ -41,6 +41,9 @@ class SmashGG(object):
         """Shows brackets given a tournament name"""
         return tournaments.event_brackets(tournament_name, event, filter_response)
 
+    def tournament_show_player_sets(self, tournament_name, player_tag, filter_response=True):
+        return tournaments.show_player_sets(tournament_name, player_tag, filter_response)
+
     def bracket_show_players(self, bracket_id, filter_response=True):
         """Shows a list of players given a bracket id"""
         return brackets.players(bracket_id, filter_response)
