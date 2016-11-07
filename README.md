@@ -38,7 +38,7 @@ import pysmash
   players = smash.tournament_show_players("hidden-bosses-4-0")
   print(players)
 
-  # show a list of sets a specific player has player played
+  # show a list of sets a specific player has played
   player_sets = smash.tournament_show_player_sets("hidden-bosses-4-0", "DOM")
   print(player_sets)
 ```
