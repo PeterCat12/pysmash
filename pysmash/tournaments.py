@@ -65,23 +65,17 @@ def show_player_sets(tournament_name, player_tag):
         player_sets = brackets.sets_played_by_player(bracket_id, player_tag)
         if len(player_sets) == 0:
             continue
-        # print(player_sets)
+
         if player is None:
             player = player_sets['player']
-        # print(player_sets)
-        _sets = player_sets['sets']
 
-        # print(player_sets['sets'])
+        _sets = player_sets['sets']
         bracket_sets = bracket_sets + _sets
-        # print(player_sets['sets'])
-        # for _set in player_sets['sets']:
-        #     bracket_sets.append(_set)
 
     return {
         'player': player,
         'sets': bracket_sets
     }
-    # that's really all I need..
 
 
 def event_brackets(tournament_name, event='wii-u-singles', filter_response=True):
