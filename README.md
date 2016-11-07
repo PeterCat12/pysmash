@@ -133,7 +133,6 @@ All results from pysmash are normal python dictionaries
     			"country": "United States",
     			"entrant_id": 296100
     		},
-
       },
     ...
   ]
