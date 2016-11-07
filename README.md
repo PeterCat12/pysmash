@@ -122,7 +122,7 @@ All results from pysmash are normal python dictionaries
     		"loser_id": "321247",
         "short_round_text": "L5",
     		"medium_round_text": "Losers 5",
-      	"full_round_text": "Losers Round 5",
+        "full_round_text": "Losers Round 5",
     		"opponent_info": {
     			"seed": 5,
     			"fname": "Joseph",
