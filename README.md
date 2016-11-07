@@ -37,6 +37,10 @@ import pysmash
   # show a complete list of players for a tournament (Might have memory issues for majors)
   players = smash.tournament_show_players("hidden-bosses-4-0")
   print(players)
+
+  # show a list of sets a specific player has player_id
+  player_sets = smash.tournament_show_player_sets("hidden-bosses-4-0", "DOM")
+  print(player_sets)
 ```
 
 See [smash.gg](https://help.smash.gg/hc/en-us/articles/217471947-API-Access) for full API documentation.
