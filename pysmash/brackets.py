@@ -102,7 +102,6 @@ def _filter_set_response(response):
     results_sets = []
 
     w_id = response['entities']['groups']['winnersTargetPhaseId']
-    print(w_id)
 
     is_final_bracket = False
     if w_id == 'None' or w_id is None:
