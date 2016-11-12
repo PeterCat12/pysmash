@@ -1,4 +1,4 @@
-from pysmash import api, utils
+from pysmash import api, utils, exceptions
 
 BRACKET_URL = '/phase_group/'
 VALID_BRACKET_PARAMS = ['sets', 'entrants']
@@ -126,6 +126,8 @@ def _get_set_from_bracket(bracket_set, is_final_bracket):
         'id': str(bracket_set['id']),  # make all IDS ints?
         'entrant_1_id': str(bracket_set['entrant1Id']),
         'entrant_2_id': str(bracket_set['entrant2Id']),
+        'entrant_1_score': bracket_set['entrant1Score'],
+        'entrant_2_score': bracket_set['entrant2Score'],
         'winner_id': str(bracket_set['winnerId']),
         'loser_id': str(bracket_set['loserId']),
         'full_round_text': bracket_set['fullRoundText'] if is_final_bracket else 'pools',
