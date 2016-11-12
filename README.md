@@ -138,7 +138,7 @@ All results from pysmash are normal python dictionaries
           "lname": "Morales",
           "country": "United States",
           "entrant_id": 296100
-    		},
+        },
       },
     ...
   ]
