@@ -46,6 +46,21 @@ import pysmash
 See [smash.gg](https://help.smash.gg/hc/en-us/articles/217471947-API-Access) for full API documentation.
 
 
+# Running the unit tests
+
+Pysmash comes with a set of unit tests. These tests are not comprehensive. They ensure that Pysmash
+is getting results from smash.gg and that the responses adhere to the outlined contracts [below](#basic-responses).
+
+In order to test behavior of the python bindings, API calls must be made to Smash.gg. These calls DO take awhile
+so I encourage you to run tests individually and not very often.
+
+    $ python pysmash/tests.py
+    ........
+    ----------------------------------------------------------------------
+    Ran 20 tests in 82.314s
+
+    OK
+
 # Basic Responses
 
 All results from pysmash are normal python dictionaries
