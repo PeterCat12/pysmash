@@ -1,5 +1,6 @@
 import unittest
 from pysmash import SmashGG
+from pysmash.brackets import _filter_set_response
 
 
 class BaseTestClass(unittest.TestCase):
@@ -70,6 +71,28 @@ class TournamentMethods(BaseTestClass):
     def test_bracket_show_sets_smash_4(self):
         result = self.smash.bracket_show_sets(225024)
         self.assertTrue(len(result) == 47)
+
+
+class SetMethods(BaseTestClass):
+
+    def test_not_sets_in_response(self):
+
+        empty_response = {
+            "entities": {
+                "groups": {
+                    "id": 273024,
+                    "phaseId": 87578,
+                    }
+            }
+        }
+        # test empty winnersTargetPhaseId
+        result = _filter_set_response(empty_response)
+        self.assertTrue(len(result) == 0)
+
+        # test empty 'sets' in entities
+        empty_response['entities']['groups']['winnersTargetPhaseId'] = 1
+        result = _filter_set_response(empty_response)
+        self.assertTrue(len(result) == 0)
 
 
 if __name__ == '__main__':
