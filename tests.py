@@ -72,6 +72,16 @@ class TournamentMethods(BaseTestClass):
         result = self.smash.bracket_show_sets(225024)
         self.assertTrue(len(result) == 47)
 
+    def test_tournament_show_events_smash_4(self):
+        result = self.smash.tournament_show_events('hidden-bosses-4-0')
+        self.assertTrue('wii-u-singles' in result['events'])
+        self.assertTrue('wii-u-doubles' in result['events'])
+
+    def test_tournament_show_with_event_param(self):
+        result = self.smash.tournament_show('hidden-bosses-4-0', ['event'])
+        self.assertTrue('wii-u-singles' in result['events'])
+        self.assertTrue('wii-u-doubles' in result['events'])
+
 
 class SetMethods(BaseTestClass):
 
@@ -85,6 +95,7 @@ class SetMethods(BaseTestClass):
                     }
             }
         }
+
         # test empty winnersTargetPhaseId
         result = _filter_set_response(empty_response)
         self.assertTrue(len(result) == 0)

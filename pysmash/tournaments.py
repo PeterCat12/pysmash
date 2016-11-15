@@ -20,6 +20,16 @@ def show(tournament_name, params=[], filter_response=True):
     return response
 
 
+def show_events(tournament_name):
+    uri = TOURNAMENT_PREFIX + tournament_name
+
+    response = api.get(uri, ['event'])
+
+    result = {}
+    result = _append_events(response, result)
+    return result
+
+
 def show_with_brackets(tournament_name, tournament_params=[], event_name='wii-u-singles'):
     """Returns tournament meta information along with a list of bracketIds for an event"""
     tournament = show(tournament_name, tournament_params)
@@ -107,7 +117,7 @@ def _filter_event_bracket_response(response):
 
 def _filter_tournament_response(response):
     """Filters the Smash.gg response to something more managable"""
-    return {
+    result = {
         'tournament_id': response['entities']['tournament']['id'],
         'venue_name': response['entities']['tournament']['venueName'],
         'venue_addresss': response['entities']['tournament']['venueAddress'],
@@ -117,3 +127,17 @@ def _filter_tournament_response(response):
         'state_short': response['entities']['tournament']['regionDisplayName'],
         'details': response['entities']['tournament']['details']
     }
+
+    result = _append_events(response, result)
+    return result
+
+
+def _append_events(response, result):
+        event_slugs = []
+        events = response['entities'].get('event', [])
+        for event in events:
+            slug = event['slug']
+            slug = slug.split("/")
+            event_slugs.append(slug[-1])
+        result['events'] = event_slugs
+        return result

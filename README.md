@@ -28,7 +28,11 @@ import pysmash
 
   # show meta information for hidden-bosses-4
   tournament = smash.tournament_show("hidden-bosses-4-0")
-  print(result)
+  print(tournament)
+
+  # show a list of events a tournament has
+  events = smash.tournament_show_events('hidden-bosses-4-0')
+  print(events)
 
   # show a complete list of sets for a tournament (Might have memory issues for majors)
   sets = smash.tournament_show_sets("hidden-bosses-4-0")
@@ -79,6 +83,11 @@ All results from pysmash are normal python dictionaries
 	"tournament_full_source_url": "tournament/hidden-bosses-4-0",
 	"name": "Hidden Bosses 4.0"
 }
+```
+
+`tournament_show_events(hidden-bosses-4-0)`
+```python
+  ['wii-u-singles', 'wii-u-doubles']
 ```
 
 `smash.tournament_show_sets("hidden-bosses-4-0")`
