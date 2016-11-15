@@ -99,18 +99,22 @@ def _filter_player_response(response):
 
 
 def _filter_set_response(response):
+    entities = response.get('entities', None)
+
+    if entities is None:
+        return []
+
+    bracket_sets = response['entities'].get('sets', None)
+    if bracket_sets is None:
+        return []
+
+    groups = entities.get('groups', None)
+    if groups is None:
+        return []
+    is_final_bracket = _is_final_bracket(groups)
+
     results_sets = []
-
-    w_id = response['entities']['groups']['winnersTargetPhaseId']
-
-    is_final_bracket = False
-    if w_id == 'None' or w_id is None:
-        is_final_bracket = True
-
-    bracket_sets = response['entities']['sets']
-
     for bracket_set in bracket_sets:
-
         # don't return `projected` brackets
         if 'preview' in str((bracket_set['id'])):
             break
@@ -119,6 +123,14 @@ def _filter_set_response(response):
         results_sets.append(_set)
 
     return results_sets
+
+
+def _is_final_bracket(groups):
+    is_final_bracket = False
+    w_id = groups.get('winnersTargetPhaseId', None)
+    if w_id == 'None' or w_id is None:
+        is_final_bracket = True
+    return is_final_bracket
 
 
 def _get_set_from_bracket(bracket_set, is_final_bracket):

@@ -28,6 +28,10 @@ class SmashGG(object):
         return tournaments.show_with_brackets(tournament_name, tournament_params,
                                               event_name)
 
+    def tournament_show_events(self, tournament_name):
+        """Show a list of events belonging to a tournment"""
+        return tournaments.show_events(tournament_name)
+
     def tournament_show_sets(self, tournament_name, tournament_params=[]):
         """Shows a complete list of sets given a tournament name"""
         return tournaments.show_sets(tournament_name, tournament_params)
