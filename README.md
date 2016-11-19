@@ -81,6 +81,11 @@ smash = pysmash.SmashGG()
   # Shows player info and a list of every set that player competed in given tournament and event names
   player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', 'DOM')
   print(player_sets)
+
+  # OR set the default event name for convenience
+  smash.set_default_event('wii-u-singles')
+  players = smash.smash.tournament_show_players('hidden-bosses-4-0') # <- event name omitted
+  sets =  smash.tournament_show_sets('hidden-bosses-4-0') # <- event name omitted
 ```
 
 # Bracket Method Usage
