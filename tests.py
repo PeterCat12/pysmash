@@ -50,6 +50,7 @@ class TournamentMethods(BaseTestClass):
 
     def test_tournament_show_with_brackets_no_event_specified(self):
         with self.assertRaises(ValidationError) as context:
+            self.smash.set_default_event('')
             self.smash.tournament_show_with_brackets('hidden-bosses-4-0')
         self.assertTrue(
             "You must specify an event name to show sets for a tournament" in str(context.exception)
@@ -82,7 +83,6 @@ class TournamentMethods(BaseTestClass):
         result = self.smash.tournament_show_sets('hidden-bosses-4-0')
         self.assertTrue(len(result) == 423)
 
-
     def test_tournamaent_show_sets_other_events(self):
         result = self.smash.tournament_show_sets(tournament_name='kombat-cup-week-4',
                                                  event='mkxl')
@@ -92,18 +92,61 @@ class TournamentMethods(BaseTestClass):
         self.assertTrue(len(result) == 95)
 
     def test_tournament_show_players(self):
+        with self.assertRaises(ValidationError) as context:
+            self.smash.tournament_show_players('hidden-bosses-4-0')
+        self.assertTrue(
+            "You must specify an event name to show sets for a tournament" in str(context.exception)
+        )
+
+        result = self.smash.tournament_show_players('hidden-bosses-4-0', 'wii-u-singles')
+        self.assertTrue(len(result) == 123)
+
+        self.smash.set_default_event('wii-u-singles')
         result = self.smash.tournament_show_players('hidden-bosses-4-0')
         self.assertTrue(len(result) == 123)
 
+        # show players for event other than smash 4
+        result = self.smash.tournament_show_players(tournament_name='kombat-cup-week-4',
+                                                    event='mkxl')
+        self.assertTrue(len(result) == 213)
+
     def test_tournament_show_event_brackets(self):
-        result = self.smash.tournament_show_event_brackets('hidden-bosses-4-0')
+        # test no event specified
+        with self.assertRaises(ValidationError) as context:
+            self.smash.tournament_show_event_brackets('hidden-bosses-4-0')
+        self.assertTrue(
+            "You must specify an event name to show sets for a tournament" in str(context.exception)
+        )
+
+        result = self.smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
+        print(result)
         for _key in self.tournament_show_event_brackets_keys_smash_4:
             self.assertFalse(self.empty(result, _key))
         self.assertTrue(len(result['bracket_ids']), 10)
 
     def test_tournament_show_player_sets(self):
-        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM')
+        # test no event specified
+        with self.assertRaises(ValidationError) as context:
+            self.smash.tournament_show_player_sets('hidden-bosses-4-0', '', 'DOM')
+        self.assertTrue(
+            "You must specify an event name to show sets for a tournament" in str(context.exception)
+        )
+
+        # test no player specified
+        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', '')
         for _key in self.tournament_show_player_sets_keys_smash_4:
+            self.assertTrue(self.key_in_dict(result, _key))
+
+        # test smash 4
+        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', 'DOM')
+        for _key in self.tournament_show_player_sets_keys_smash_4:
+            self.assertTrue(self.key_in_dict(result, _key))
+            self.assertFalse(self.empty(result, _key))
+
+        # test other event
+        result = self.smash.tournament_show_player_sets('kombat-cup-week-4', 'mkxl', 'Gamx')
+        for _key in self.tournament_show_player_sets_keys_smash_4:
+            self.assertTrue(self.key_in_dict(result, _key))
             self.assertFalse(self.empty(result, _key))
 
     def test_bracket_show_players(self):

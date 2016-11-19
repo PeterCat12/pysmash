@@ -15,8 +15,75 @@ Pysmash provides python bindings for the
 
 # Basic Usage
 
-Currently, Smash.gg's developer API is public and fairly nascent. I recommended that you cache your responses from this wrapper to avoid hammering Smash.gg's API as some of these calls are fairly "expensive" (for isntance, to grab a complete list of players/entrants for a tournament, this wrapper needs to make 1 call to grab a list of bracket id's and then 1 call PER bracket to grab every entrant in that bracket). More examples and a test suite will follow as time permits!
+Currently, Smash.gg's developer API is public and fairly nascent. I recommended that you cache your responses from this wrapper to avoid hammering Smash.gg's API as some of these calls are fairly "expensive" (for isntance, to grab a complete list of players/entrants for a tournament, this wrapper needs to make 1 call to grab a list of bracket id's and then 1 call PER bracket to grab every entrant in that bracket).
 
+I've organized the methods on the `SmashGG` class into three types. `MetaData routes`, `General/Convenience routes`, and `Bracket routes`. Some result sets might be very LARGE depending on the size of the tournament. This library does not currently have any sort of paging for large result sets.
+
+
+# MetaData Method Usage
+
+```python
+import pysmash
+# init the wrapper class
+smash = pysmash.SmashGG()
+
+# All results are represented as normal Python dicts
+# MetaData Method usage
+
+  # show meta information for hidden-bosses-4
+  tournament = smash.tournament_show("hidden-bosses-4-0")
+  print(tournament)
+
+  # show meta information with a list of phases
+  tournament_with_phase_information = smash.tournament_show("hidden-bosses-4-0", ['phase'])
+  print(tournament_with_phase_information)
+
+  # show meta information with a list of groups (AKA bracket meta data)
+  tournament_with_group_information = smash.tournament_show("hidden-bosses-4-0", ['groups'])
+  print(tournament_with_group_information)
+
+  # show meta information with a list of events
+  tournament_with_event_information = smash.tournament_show("hidden-bosses-4-0", ['event'])
+  print(tournament_with_event_information)
+
+  #show meta information with all three params
+  tournament_full_meta = smash.tournament_show("hidden-bosses-4-0", ['event', 'groups', 'event'])
+  print(tournament_full_meta)
+
+```
+
+# Convenience Method Usage
+
+```python
+import pysmash
+# init the wrapper class
+smash = pysmash.SmashGG()
+
+# All results are represented as normal Python dicts
+# Convenience Method usage
+
+  # show JUST a list of events for a tournament (excludes meta data info)
+  events = smash.tournament_show_events('hidden-bosses-4-0')
+  print(events)
+
+  # Shows a complete list of sets given tournament and event names
+  sets = smash.tournament_show_sets('hidden-bosses-4-0', 'wii-u-singles')
+  print(sets) # note: result might be VERY large for larger tournaments.
+
+  # Shows a complete list of players given tournament and event names
+  players = smash.tournament_show_players('hidden-bosses-4-0', 'wii-u-singles')
+  print(players)
+
+  # Shows a complete list of bracket ids given tournament and event names
+  brackets = smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
+  print(brackets)
+
+  # Shows player info and a list of every set that player competed in given tournament and event names
+  player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', 'DOM')
+  print(player_sets)
+```
+
+# Bracket Method Usage
 
 ```python
 import pysmash
@@ -25,26 +92,19 @@ import pysmash
   smash = pysmash.SmashGG()
 
   # All results are represented as normal Python dicts
+  # Bracket Method usage
 
-  # show meta information for hidden-bosses-4
-  tournament = smash.tournament_show("hidden-bosses-4-0")
-  print(tournament)
+  # show players given a bracket_id
+  brackets = smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
+  bracket_players = smash.bracket_show_players(brackets['bracket_ids'][0])  # <- bracket_id
+  # bracket_players = smash.bracket_show_players(224997) # <- if you know the id before hand
+  print(bracket_players)
 
-  # show a list of events a tournament has
-  events = smash.tournament_show_events('hidden-bosses-4-0')
-  print(events)
-
-  # show a complete list of sets for a tournament (Might have memory issues for majors)
-  sets = smash.tournament_show_sets("hidden-bosses-4-0")
+  # show played sets for a bracket
+  brackets = smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
+  sets =  self.smash.bracket_show_sets(brackets['bracket_ids'][0]) # <- bracket_id
+  # sets = self.smash.bracket_show_sets(225024) # <- if you know the id before hand
   print(sets)
-
-  # show a complete list of players for a tournament (Might have memory issues for majors)
-  players = smash.tournament_show_players("hidden-bosses-4-0")
-  print(players)
-
-  # show a list of sets a specific player has played
-  player_sets = smash.tournament_show_player_sets("hidden-bosses-4-0", "DOM")
-  print(player_sets)
 ```
 
 See [smash.gg](https://help.smash.gg/hc/en-us/articles/217471947-API-Access) for full API documentation.
@@ -65,11 +125,13 @@ so I encourage you to run tests individually and not very often.
 
     OK
 
-# Basic Responses
 
-All results from pysmash are normal python dictionaries
+# Method Responses
 
-`smash.tournament_show("hidden-bosses-4-0")`
+**Method Signature:**
+`tournament_show(tournament_name, tournament_params=[])`
+
+**Response:**
 ```python
 {
 	"links": {
@@ -78,19 +140,62 @@ All results from pysmash are normal python dictionaries
 	"venue_name": "Poplar Creek Bowl",
 	"state_short": "IL",
 	"venue_addresss": "2354 W Higgins Rd, Hoffman Estates, Illinois 60169",
-	"details": "Hidden Bosses is an Arcadian tournament for non power ranked players in every state. This is a great opportunity to discover new hidden bosses and talented unranked players and see how they compare in a tournament environment where top players are not present. Hidden Bosses will be a reoccuring tournament series with 1v1's and 2v2's at each tournament. \n\nWe will be at Poplar Creek Bowl again for HB4. The venue offers a lot of space as well as cheap and amazing food options. \n\nVenue fee is set at $10 (Paid pre-registration) and $15 (No pre-registration for at the door payment). Spectator passes are $5 which include friendlies and can be purchased at the door. Singles entry is $10, doubles is $10 per player, and crew battles are $5 per player.\n\nSchedule:\n\n2v2's Pools - 11 am - 12:30 pm\nTop 8 - 12:30 pm - 2 pm\nCrew Battles - 2 pm - 4 pm\n1v1 Pools:\nWave A - 3:30 pm - 5 pm\nWave B - 5 pm - 6:30 pm\n2nd Chance Bracket - 6:30 - 8 pm\nTop 32 - 7 pm - 10:30 pm\n\nPrevious top 3 finalists include (All are ineligible for 6 months):\n\nHB2:\n1. Nero\n2. Ge0\n3. Miloni\n\nHB3:\n1. McMuffin\n2. Waasabi\n3. Gamerhead\n\nList of players ineligible:\n\nIllinois:\n1. JJROCKETS\n2. Ned\n3. Tyroy\n4. NiTe\n5. Shel\n6. Dan\n7. BoScotty\n8. big_mak\n9. Bushi\n10. Naoto\n11. Demitus\n12. Seth\n13. JTWild\n14. Anonymous Moniker\n15. Hoenn\n16. Slowjoe\n17. Based Ren\n18. StarbasedFruit\n19. Sheen\n20. Atata\n\nWisconsin:\n1. Marshall\n2. Zolda\n3. PowPow\n4. Z2G\n5. Fons\n6. Akiro\n\nIowa: \n1. Sinnyboo242\n2. Ecnebanjo\n3. Chan_MM\n4. 2Jays\n5. Prophet\n6. Di King\n\nIndiana:\n1. Renegade\n2. Taka\n3. Krow\n4. Benson Obama\n5. Vemnzr\n6. XeroXen\n\nMichigan:\n1. Zinoto\n2. Loe1\n3. Rayquaza\n4. Ryuga\n5. Ally\n6. Regralht\n7. SETHsational\n8. Ksev\n9. Lou Rich\n10. Smasher1001\n11. TECHnology\n12. Mikey Lenetia\n13. Stewy\n14. Dicks\n15. Nom\n16. Coco\n17. Viev\n18. Nero (1st place at HB2)\n19. Ge0 (2nd place at HB2)\n20. Miloni (3rd place at HB2)\n\nSt. Louis:\n1. JSwiss\n2. Moti\n3. Zguh\n4. Flow Yo\n5. GenMuH\n\nOhio:\n1. Darkshad\n2. Katakiri\n3. H-Man\n4. Colinies\n5. CrazyColorz\n6. Munenori\n7. Tekno\n8. Karinole\n9. jt5565\n10. EMPR Eevee\n\n*** If your state is not listed on here and you are a PR'd player, message us to check first if you are eligible before registering.\n\nOnce you are registered, there are no refunds or transfers. This is to ensure that players that register will end up attending.",
+	"details": "Hidden Bosses is an Arcadian tournament for non power ranked players in every state. This ...",
+  'phases': [
+    {
+      'type_id': 1,
+      'event_id': 17850,
+      'phase_id': 70445,
+      'phase_name': 'Bracket',
+      'is_exhibition': False
+    },
+    ...
+  ],
+  'groups': [
+    {
+      'title': None,
+      'group_id': 224997,
+      'phase_id': 70445,
+      'winners_target_phase': 70465
+    },
+    ...
+  ],
+  'events': [
+    'wii-u-singles',
+    'wii-u-doubles'
+  ]
 	"tournament_id": 3742,
 	"tournament_full_source_url": "tournament/hidden-bosses-4-0",
-	"name": "Hidden Bosses 4.0"
+	"name": "Hidden Bosses 4.0",
 }
 ```
 
-`tournament_show_events(hidden-bosses-4-0)`
+**Method Signature:**
+`tournament_show_events(tournament_name)`
+
+**Response:**
 ```python
   ['wii-u-singles', 'wii-u-doubles']
 ```
 
-`smash.tournament_show_sets("hidden-bosses-4-0")`
+**Method Signature:**
+`tournament_show_event_brackets(tournament_name, event)`
+
+**Response:**
+```python
+{
+  'bracket_full_source_url': 'tournament/hidden-bosses-4-0/event/wii-u-singles',
+  'event_name': 'Wii U Singles'
+  'bracket_ids': [
+    '224997', '225017', '225018', '225019', '225020', '225021', '225022', '225023', '225024', '225025'
+  ]
+}
+```
+
+**Method Signature:**
+`tournament_show_sets("tournament_name, event_name")`
+
+**Response:**
 ```python
 [
   {
@@ -107,8 +212,10 @@ All results from pysmash are normal python dictionaries
   ...
 ]
 ```
+**Method Signature:**
+`tournament_show_players("tournament_name, event_name")`
 
-`smash.tournament_show_players("hidden-bosses-4-0")`
+**Response:**
 ```python
 [
   {
@@ -125,7 +232,10 @@ All results from pysmash are normal python dictionaries
 ]
 ```
 
-`smash.tournament_show_player_sets("hidden-bosses-4-0", "DOM")`
+**Method Signature:**
+`tournament_show_player_sets(tournament_name, event_name, player_tag)`
+
+**Response:**
 ```python
 {
   "player": {

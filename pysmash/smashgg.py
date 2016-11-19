@@ -30,10 +30,9 @@ class SmashGG(object):
         """Show tournament information by name"""
         return tournaments.show(tournament_name, params, filter_response)
 
-    def tournament_show_with_brackets(self, tournament_name, event='',
-                                      tournament_params=[]):
-        event = self._validate_event_name(event)
+    def tournament_show_with_brackets(self, tournament_name, event='', tournament_params=[]):
         """Show tournament information with a list of Bracket Ids by event"""
+        event = self._validate_event_name(event)
         return tournaments.show_with_brackets(tournament_name, event, tournament_params)
 
     # general tournament endpoints
@@ -41,24 +40,24 @@ class SmashGG(object):
         """Show a list of events belonging to a tournment"""
         return tournaments.show_events(tournament_name)
 
-    def tournament_show_sets(self, tournament_name,
-                             event='', tournament_params=[]):
-        """Shows a complete list of sets given a tournament name"""
+    def tournament_show_sets(self, tournament_name, event='', tournament_params=[]):
+        """Shows a complete list of sets given a tournament and event names"""
         event = self._validate_event_name(event)
-        return tournaments.show_sets(tournament_name, event, tournament_params,)
+        return tournaments.show_sets(tournament_name, event, tournament_params)
 
-    def tournament_show_players(self, tournament_name,
-                                tournament_params=[], event_name='wii-u-singles'):
-        """Shows a complete list of players/entrants given a tournament and event name """
-        return tournaments.show_players(tournament_name, tournament_params, event_name)
+    def tournament_show_players(self, tournament_name, event='', tournament_params=[]):
+        """Shows a complete list of players/entrants given a tournament and event name"""
+        event = self._validate_event_name(event)
+        return tournaments.show_players(tournament_name, tournament_params, event)
 
-    def tournament_show_event_brackets(self, tournament_name,
-                                       event='wii-u-singles', filter_response=True):
+    def tournament_show_event_brackets(self, tournament_name, event='', filter_response=True):
         """Shows brackets given a tournament name"""
+        event = self._validate_event_name(event)
         return tournaments.event_brackets(tournament_name, event, filter_response)
 
-    def tournament_show_player_sets(self, tournament_name, player_tag):
-        return tournaments.show_player_sets(tournament_name, player_tag)
+    def tournament_show_player_sets(self, tournament_name, event, player_tag):
+        event = self._validate_event_name(event)
+        return tournaments.show_player_sets(tournament_name, event, player_tag)
 
     # bracket endpoints
     def bracket_show_players(self, bracket_id, filter_response=True):

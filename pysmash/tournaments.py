@@ -20,6 +20,7 @@ def show(tournament_name, params=[], filter_response=True):
 
 
 def show_events(tournament_name):
+    """Returns a list of events for a tournament"""
     uri = TOURNAMENT_PREFIX + tournament_name
 
     response = api.get(uri, ['event'])
@@ -63,9 +64,9 @@ def show_players(tournament_name, event_name, tournament_params=[]):
     return list({v['tag']: v for v in results}.values())
 
 
-def show_player_sets(tournament_name, player_tag):
+def show_player_sets(tournament_name, event, player_tag):
     """Returns all players from a tournament"""
-    tournament = show_with_brackets(tournament_name)
+    tournament = show_with_brackets(tournament_name, event)
 
     player = None
     bracket_sets = []
