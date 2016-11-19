@@ -1,10 +1,9 @@
 from pysmash import api, brackets, utils
 
-TOURNAMENT_PREFIX = '/tournament/'
+TOURNAMENT_PREFIX = 'tournament/'
 EVENT_URL = '/event/'
 
 VALID_PARAMS = ['event', 'phase', 'groups', 'stations']
-VALID_EVENTS = ['wii-u-singles', 'wii-u-doubles']
 
 
 def show(tournament_name, params=[], filter_response=True):
@@ -15,12 +14,13 @@ def show(tournament_name, params=[], filter_response=True):
     response = api.get(uri, params)
 
     if filter_response:
-        response = _filter_tournament_response(response)
+        response = _filter_tournament_response(response, params)
 
     return response
 
 
 def show_events(tournament_name):
+    """Returns a list of events for a tournament"""
     uri = TOURNAMENT_PREFIX + tournament_name
 
     response = api.get(uri, ['event'])
@@ -30,17 +30,17 @@ def show_events(tournament_name):
     return result
 
 
-def show_with_brackets(tournament_name, tournament_params=[], event_name='wii-u-singles'):
+def show_with_brackets(tournament_name, event, tournament_params=[], ):
     """Returns tournament meta information along with a list of bracketIds for an event"""
     tournament = show(tournament_name, tournament_params)
-    brackets = event_brackets(tournament_name, event_name)
+    brackets = event_brackets(tournament_name, event)
 
     return utils.merge_two_dicts(tournament, brackets)
 
 
-def show_sets(tournament_name, tournament_params=[]):
+def show_sets(tournament_name, event, tournament_params=[]):
     """Returns all sets from a tournament"""
-    tournament = show_with_brackets(tournament_name, tournament_params)
+    tournament = show_with_brackets(tournament_name, event, tournament_params)
 
     results = []
     for bracket_id in tournament['bracket_ids']:
@@ -52,7 +52,7 @@ def show_sets(tournament_name, tournament_params=[]):
     return results
 
 
-def show_players(tournament_name, tournament_params=[]):
+def show_players(tournament_name, event_name, tournament_params=[]):
     """Returns all players from a tournament"""
     tournament = show_with_brackets(tournament_name, tournament_params)
 
@@ -64,9 +64,9 @@ def show_players(tournament_name, tournament_params=[]):
     return list({v['tag']: v for v in results}.values())
 
 
-def show_player_sets(tournament_name, player_tag):
+def show_player_sets(tournament_name, event, player_tag):
     """Returns all players from a tournament"""
-    tournament = show_with_brackets(tournament_name)
+    tournament = show_with_brackets(tournament_name, event)
 
     player = None
     bracket_sets = []
@@ -89,8 +89,11 @@ def show_player_sets(tournament_name, player_tag):
 
 
 def event_brackets(tournament_name, event='wii-u-singles', filter_response=True):
+    # first, get the events for the tournament...
+    events = show_events(tournament_name)
+
     """Returns a list of brackets ids for an event"""
-    utils._validate_query_params(params=[event], valid_params=VALID_EVENTS, route_type='event')
+    utils._validate_query_params(params=[event], valid_params=events['events'], route_type='event')
 
     uri = TOURNAMENT_PREFIX + tournament_name + '/event/' + event
 
@@ -115,7 +118,7 @@ def _filter_event_bracket_response(response):
     }
 
 
-def _filter_tournament_response(response):
+def _filter_tournament_response(response, params=[]):
     """Filters the Smash.gg response to something more managable"""
     result = {
         'tournament_id': response['entities']['tournament']['id'],
@@ -128,16 +131,49 @@ def _filter_tournament_response(response):
         'details': response['entities']['tournament']['details']
     }
 
-    result = _append_events(response, result)
+    if 'event' in params:
+        result = _append_events(response, result)
+    if 'phase' in params:
+        result = _append_phases(response, result)
+    if 'groups' in params:
+        result = _append_groups(response, result)
     return result
 
 
+def _append_groups(response, result):
+    result['groups'] = []
+    groups = response['entities'].get('groups', [])
+    for group in groups:
+        group_dict = {
+            "group_id": group['id'],
+            'phase_id': group['phaseId'],
+            'title': group['title'],
+            'winners_target_phase': group['winnersTargetPhaseId'],
+        }
+        result['groups'].append(group_dict)
+    return result
+
+
+def _append_phases(response, result):
+        result['phases'] = []
+        phases = response['entities'].get('phase', [])
+        for phase in phases:
+            phase_dict = {
+                "phase_id": phase['id'],
+                'event_id': phase['eventId'],
+                'phase_name': phase['name'],
+                'is_exhibition': phase['isExhibition'],
+                'type_id': phase['typeId']
+            }
+            result['phases'].append(phase_dict)
+        return result
+
+
 def _append_events(response, result):
-        event_slugs = []
+        result['events'] = []
         events = response['entities'].get('event', [])
         for event in events:
             slug = event['slug']
             slug = slug.split("/")
-            event_slugs.append(slug[-1])
-        result['events'] = event_slugs
+            result['events'].append(slug[-1])
         return result
