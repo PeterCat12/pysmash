@@ -34,6 +34,9 @@ smash = pysmash.SmashGG()
   tournament = smash.tournament_show("hidden-bosses-4-0")
   print(tournament)
 
+  tournament_with_bracket_ids = smash.tournament_show_with_brackets("hidden-bosses-4-0", 'wii-u-singles')
+  print(tournament_with_bracket_ids)
+
   # show meta information with a list of phases
   tournament_with_phase_information = smash.tournament_show("hidden-bosses-4-0", ['phase'])
   print(tournament_with_phase_information)
@@ -79,13 +82,14 @@ smash = pysmash.SmashGG()
   print(brackets)
 
   # Shows player info and a list of every set that player competed in given tournament and event names
-  player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', 'DOM')
+  player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
   print(player_sets)
 
   # OR set the default event name for convenience
   smash.set_default_event('wii-u-singles')
   players = smash.smash.tournament_show_players('hidden-bosses-4-0') # <- event name omitted
   sets =  smash.tournament_show_sets('hidden-bosses-4-0') # <- event name omitted
+  player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM') # <- event name omitted
 ```
 
 # Bracket Method Usage
@@ -134,7 +138,7 @@ so I encourage you to run tests individually and not very often.
 # Method Responses
 
 **Method Signature:**
-`tournament_show(tournament_name, tournament_params=[])`
+`tournament_show(tournament_name, params=[])`
 
 **Response:**
 ```python
@@ -176,6 +180,30 @@ so I encourage you to run tests individually and not very often.
 ```
 
 **Method Signature:**
+`tournament_show_with_brackets(tournament_name, event='', params=[])`
+
+**Response:**
+``python
+{
+  'venue_name': 'Poplar Creek Bowl',
+  'name': 'Hidden Bosses 4.0',
+  'details': "Hidden Bosses is an Arcadian tournament for non power ranked players in every state. This ...",
+  'tournament_id': 3742,
+  'bracket_ids':
+    [
+      '224997', '225017', '225018', '225019', '225020', '225021', '225022', '225023', '225024', '225025'
+    ],
+  'state_short': 'IL',
+  'event_name': 'Wii U Singles',
+  'tournament_full_source_url': 'tournament/hidden-bosses-4-0',
+  'venue_addresss': '2354 W Higgins Rd, Hoffman Estates, Illinois 60169',
+  'links': {
+    'facebook': 'https://www.facebook.com/events/1821627474736778/'
+  },
+  'bracket_full_source_url': 'tournament/hidden-bosses-4-0/event/wii-u-singles'}
+```
+
+**Method Signature:**
 `tournament_show_events(tournament_name)`
 
 **Response:**
@@ -184,7 +212,7 @@ so I encourage you to run tests individually and not very often.
 ```
 
 **Method Signature:**
-`tournament_show_event_brackets(tournament_name, event)`
+`tournament_show_event_brackets(tournament_name, event='')`
 
 **Response:**
 ```python
@@ -198,7 +226,7 @@ so I encourage you to run tests individually and not very often.
 ```
 
 **Method Signature:**
-`tournament_show_sets("tournament_name, event_name")`
+`tournament_show_sets(tournament_name, event='')`
 
 **Response:**
 ```python
@@ -218,7 +246,7 @@ so I encourage you to run tests individually and not very often.
 ]
 ```
 **Method Signature:**
-`tournament_show_players("tournament_name, event_name")`
+`tournament_show_players(tournament_name, event='')`
 
 **Response:**
 ```python
@@ -238,7 +266,7 @@ so I encourage you to run tests individually and not very often.
 ```
 
 **Method Signature:**
-`tournament_show_player_sets(tournament_name, event_name, player_tag)`
+`tournament_show_player_sets(tournament_name, player_tag, event='')`
 
 **Response:**
 ```python
@@ -282,4 +310,47 @@ so I encourage you to run tests individually and not very often.
     ...
   ]
 }
+```
+
+**Method Signature:**
+`bracket_show_players(bracket_id)`
+
+**Response:**
+```python
+[
+  {
+    'fname': 'Dominic ',
+    'state': 'IL',
+    'final_placement': 7,
+    'seed': 1,
+    'entrant_id': 321247,
+    'lname': 'DalDegan',
+    'country': 'United States',
+    'tag': 'DOM'
+  },
+  ...
+]
+```
+
+**Method Signature:**
+`bracket_show_sets(bracket_id)`
+
+**Response:**
+```python
+[
+  {
+    'id': '5984600',
+    'entrant_2_id': '315958',
+    'entrant_1_score': 2,
+    'medium_round_text': 'Winners 1',
+    'loser_id': '315958',
+    'full_round_text': 'Winners Round 1',
+    'bracket_id': '225024',
+    'entrant_1_id': '321247',
+    'winner_id': '321247',  
+    'short_round_text': 'W1',
+    'entrant_2_score': 1
+  },
+  ...
+]
 ```

@@ -30,20 +30,20 @@ class SmashGG(object):
         """Show tournament information by name"""
         return tournaments.show(tournament_name, params, filter_response)
 
-    def tournament_show_with_brackets(self, tournament_name, event='', tournament_params=[]):
+    def tournament_show_with_brackets(self, tournament_name, event='', params=[]):
         """Show tournament information with a list of Bracket Ids by event"""
         event = self._validate_event_name(event)
-        return tournaments.show_with_brackets(tournament_name, event, tournament_params)
+        return tournaments.show_with_brackets(tournament_name, event, params)
 
     # general tournament endpoints
     def tournament_show_events(self, tournament_name):
         """Show a list of events belonging to a tournment"""
         return tournaments.show_events(tournament_name)
 
-    def tournament_show_sets(self, tournament_name, event='', tournament_params=[]):
+    def tournament_show_sets(self, tournament_name, event='', params=[]):
         """Shows a complete list of sets given a tournament and event names"""
         event = self._validate_event_name(event)
-        return tournaments.show_sets(tournament_name, event, tournament_params)
+        return tournaments.show_sets(tournament_name, event, params)
 
     def tournament_show_players(self, tournament_name, event='', tournament_params=[]):
         """Shows a complete list of players/entrants given a tournament and event name"""
@@ -55,7 +55,7 @@ class SmashGG(object):
         event = self._validate_event_name(event)
         return tournaments.event_brackets(tournament_name, event, filter_response)
 
-    def tournament_show_player_sets(self, tournament_name, event, player_tag):
+    def tournament_show_player_sets(self, tournament_name, player_tag, event=''):
         event = self._validate_event_name(event)
         return tournaments.show_player_sets(tournament_name, event, player_tag)
 

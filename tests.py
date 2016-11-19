@@ -119,7 +119,6 @@ class TournamentMethods(BaseTestClass):
         )
 
         result = self.smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
-        print(result)
         for _key in self.tournament_show_event_brackets_keys_smash_4:
             self.assertFalse(self.empty(result, _key))
         self.assertTrue(len(result['bracket_ids']), 10)
@@ -127,24 +126,24 @@ class TournamentMethods(BaseTestClass):
     def test_tournament_show_player_sets(self):
         # test no event specified
         with self.assertRaises(ValidationError) as context:
-            self.smash.tournament_show_player_sets('hidden-bosses-4-0', '', 'DOM')
+            self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', '')
         self.assertTrue(
             "You must specify an event name to show sets for a tournament" in str(context.exception)
         )
 
         # test no player specified
-        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', '')
+        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', '', 'wii-u-singles')
         for _key in self.tournament_show_player_sets_keys_smash_4:
             self.assertTrue(self.key_in_dict(result, _key))
 
         # test smash 4
-        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'wii-u-singles', 'DOM')
+        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
         for _key in self.tournament_show_player_sets_keys_smash_4:
             self.assertTrue(self.key_in_dict(result, _key))
             self.assertFalse(self.empty(result, _key))
 
         # test other event
-        result = self.smash.tournament_show_player_sets('kombat-cup-week-4', 'mkxl', 'Gamx')
+        result = self.smash.tournament_show_player_sets('kombat-cup-week-4', 'Gamx', 'mkxl')
         for _key in self.tournament_show_player_sets_keys_smash_4:
             self.assertTrue(self.key_in_dict(result, _key))
             self.assertFalse(self.empty(result, _key))
