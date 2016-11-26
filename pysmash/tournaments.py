@@ -123,7 +123,7 @@ def _filter_tournament_response(response, params=[]):
     result = {
         'tournament_id': response['entities']['tournament']['id'],
         'venue_name': response['entities']['tournament']['venueName'],
-        'venue_addresss': response['entities']['tournament']['venueAddress'],
+        'venue_address': response['entities']['tournament']['venueAddress'],
         'name': response['entities']['tournament']['name'],
         'tournament_full_source_url': response['entities']['tournament']['slug'],
         'links': response['entities']['tournament']['links'],
