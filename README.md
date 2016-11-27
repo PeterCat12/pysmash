@@ -183,7 +183,7 @@ so I encourage you to run tests individually and not very often.
 `tournament_show_with_brackets(tournament_name, event='', params=[])`
 
 **Response:**
-``python
+```python
 {
   'venue_name': 'Poplar Creek Bowl',
   'name': 'Hidden Bosses 4.0',
