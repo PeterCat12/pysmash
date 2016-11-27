@@ -1,16 +1,15 @@
 from distutils.core import setup
-import pysmash
 
 
 setup(name="pysmash",
       author="Peter Wensel",
       url="https://github.com/PeterCat12/pysmash",
       description="python bindings for Smash.gg API",
-      version=pysmash.__version__,
+      version="2.0.8",
       packages=[
           'pysmash',
       ],
       install_requires=[
-          'requests==2.10.0',
-      ]
+        'requests==2.12.1',
+    ],
 )
