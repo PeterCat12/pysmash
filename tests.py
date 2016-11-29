@@ -24,14 +24,15 @@ class TournamentMethods(BaseTestClass):
     """Only thing we can reliably test is that the contract remains consistent"""
 
     tournament_show_keys_smash_4 = [
-        'details', 'venue_addresss', 'tournament_full_source_url',
-        'tournament_id', 'name', 'state_short', 'venue_name', 'links'
+        'details', 'venue_address', 'tournament_full_source_url',
+        'tournament_id', 'name', 'state_short', 'venue_name', 'links', 'start_at',
+        'end_at'
     ]
 
     tournament_show_with_bracket_keys_smash_4 = [
-        'details', 'venue_addresss', 'tournament_full_source_url',
+        'details', 'venue_address', 'tournament_full_source_url',
         'tournament_id', 'name', 'state_short', 'venue_name', 'bracket_ids',
-        'event_name', 'links', 'bracket_full_source_url'
+        'event_name', 'links', 'bracket_full_source_url', 'start_at', 'end_at'
     ]
 
     tournament_show_event_brackets_keys_smash_4 = [

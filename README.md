@@ -6,7 +6,7 @@ Pysmash provides python bindings for the
 
 # Requirements
 
-- requests==2.10.0
+- requests==2.12.1
 
 
 # Installation
@@ -15,7 +15,7 @@ Pysmash provides python bindings for the
 
 # Basic Usage
 
-Currently, Smash.gg's developer API is public and fairly nascent. I recommended that you cache your responses from this wrapper to avoid hammering Smash.gg's API as some of these calls are fairly "expensive" (for isntance, to grab a complete list of players/entrants for a tournament, this wrapper needs to make 1 call to grab a list of bracket id's and then 1 call PER bracket to grab every entrant in that bracket).
+Currently, Smash.gg's developer API is public and fairly nascent. I recommended that you cache your responses from this wrapper to avoid hammering Smash.gg's API as some of these calls are fairly "expensive" (for instance, to grab a complete list of players/entrants for a tournament, this wrapper needs to make 1 call to grab a list of bracket id's and then 1 call PER bracket to grab every entrant in that bracket).
 
 I've organized the methods on the `SmashGG` class into three types. `MetaData routes`, `General/Convenience routes`, and `Bracket routes`. Some result sets might be very LARGE depending on the size of the tournament. This library does not currently have any sort of paging for large result sets.
 
@@ -150,6 +150,8 @@ so I encourage you to run tests individually and not very often.
 	"state_short": "IL",
 	"venue_addresss": "2354 W Higgins Rd, Hoffman Estates, Illinois 60169",
 	"details": "Hidden Bosses is an Arcadian tournament for non power ranked players in every state. This ...",
+  'start_at': '1475337600',
+  'end_at': '1475338600',
   'phases': [
     {
       'type_id': 1,
@@ -188,6 +190,8 @@ so I encourage you to run tests individually and not very often.
   'venue_name': 'Poplar Creek Bowl',
   'name': 'Hidden Bosses 4.0',
   'details': "Hidden Bosses is an Arcadian tournament for non power ranked players in every state. This ...",
+  'start_at': '1475337600',
+  'end_at': '1475338600',
   'tournament_id': 3742,
   'bracket_ids':
     [

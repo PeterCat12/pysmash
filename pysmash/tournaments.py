@@ -128,6 +128,8 @@ def _filter_tournament_response(response, params=[]):
         'tournament_full_source_url': response['entities']['tournament']['slug'],
         'links': response['entities']['tournament']['links'],
         'state_short': response['entities']['tournament']['regionDisplayName'],
+        'start_at': response['entities']['tournament']['startAt'],
+        'end_at': response['entities']['tournament']['endAt'],
         'details': response['entities']['tournament']['details']
     }
 
