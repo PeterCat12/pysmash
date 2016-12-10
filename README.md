@@ -85,11 +85,16 @@ smash = pysmash.SmashGG()
   player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
   print(player_sets)
 
+  #Show sets between two players for a given tournament and event names
+  player_head_to_head = smash.tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada', 'wii-u-singles')
+  print(player_head_to_head)
+
   # OR set the default event name for convenience
   smash.set_default_event('wii-u-singles')
   players = smash.smash.tournament_show_players('hidden-bosses-4-0') # <- event name omitted
   sets =  smash.tournament_show_sets('hidden-bosses-4-0') # <- event name omitted
   player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM') # <- event name omitted
+  player_head_to_head = smash.tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada', 'wii-u-singles')
 ```
 
 # Bracket Method Usage
@@ -249,6 +254,54 @@ so I encourage you to run tests individually and not very often.
   ...
 ]
 ```
+
+**Method Signature:**
+`tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada', 'wii-u-singles')`
+
+**Response:**
+```python
+{
+  'player': {
+    'country': 'United States',
+    'lname': 'Wensel',
+    'final_placement': 25,
+    'tag': 'Giant',
+    'entrant_id': 321406,
+    'seed': 25, 'state':
+    'IL', 'fname': 'Peter'
+  },
+  'sets': [
+    {
+      'opponent_info': {
+        'country': 'United States',
+        'lname': 'Ismail',
+        'final_placement': 17,
+        'tag': 'Hamada',
+        'entrant_id': 315244,
+        'seed': 8,
+        'state': 'IL',
+        'fname':
+        'Mohammed'
+      },
+      'entrant_1_id': '315244',
+      'entrant_1_score': 2,
+      'player_id': 321406,
+      'medium_round_text': 'pools',
+      'opponent_id': 315244,
+      'short_round_text': 'pools',
+      'winner_id': '315244',
+      'loser_id': '321406',
+      'full_round_text': 'pools',
+      'bracket_id': '225023',
+      'id': '5982524',
+      'entrant_2_score': 1,
+      'entrant_2_id': '321406'
+    },
+    ...
+  ]
+}
+```
+
 **Method Signature:**
 `tournament_show_players(tournament_name, event='')`
 

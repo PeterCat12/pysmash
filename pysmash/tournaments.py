@@ -88,6 +88,19 @@ def show_player_sets(tournament_name, event, player_tag):
     }
 
 
+def show_head_to_head(tournament_name, event, player1_tag, player2_tag):
+    """Returns sets played between 2 players"""
+    player1_sets = show_player_sets(tournament_name, event, player1_tag)
+    result_sets = {
+        'player': player1_sets['player'],
+        'sets': []
+    }
+    for _set in player1_sets['sets']:
+        if _set['opponent_info']['tag'].lower() == player2_tag:
+            result_sets['sets'].append(_set)
+    return result_sets
+
+
 def event_brackets(tournament_name, event='wii-u-singles', filter_response=True):
     # first, get the events for the tournament...
     events = show_events(tournament_name)

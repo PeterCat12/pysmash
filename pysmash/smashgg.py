@@ -59,6 +59,10 @@ class SmashGG(object):
         event = self._validate_event_name(event)
         return tournaments.show_player_sets(tournament_name, event, player_tag)
 
+    def tournament_show_head_to_head(self, tournament_name, player1_tag, player2_tag, event=''):
+        event = self._validate_event_name(event)
+        return tournaments.show_head_to_head(tournament_name, event, player1_tag, player2_tag)
+
     # bracket endpoints
     def bracket_show_players(self, bracket_id, filter_response=True):
         """Shows a list of players given a bracket id"""

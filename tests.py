@@ -182,6 +182,13 @@ class TournamentMethods(BaseTestClass):
         self.assertTrue('wii-u-doubles' in result['events'])
         self.assertTrue(len(result['groups']) == 11)
 
+    def test_tournament_show_head_to_head(self):
+        results = self.smash.tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada',
+                                                          'wii-u-singles')
+        print(results)
+        self.assertTrue(len(results['sets']) == 1)
+        self.assertTrue(results['sets'][0]['opponent_info']['tag'].lower() == 'hamada')
+
 
 class SetMethods(BaseTestClass):
 
