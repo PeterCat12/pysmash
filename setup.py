@@ -5,7 +5,7 @@ setup(name="pysmash",
       author="Peter Wensel",
       url="https://github.com/PeterCat12/pysmash",
       description="python bindings for Smash.gg API",
-      version="2.1.2",
+      version="2.1.3",
       packages=[
           'pysmash',
       ],
