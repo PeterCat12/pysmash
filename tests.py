@@ -139,6 +139,7 @@ class TournamentMethods(BaseTestClass):
 
         # test smash 4
         result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
+        self.assertTrue(len(result['sets']), 6)
         for _key in self.tournament_show_player_sets_keys_smash_4:
             self.assertTrue(self.key_in_dict(result, _key))
             self.assertFalse(self.empty(result, _key))

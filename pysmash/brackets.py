@@ -62,7 +62,7 @@ def _filter_sets_given_player(response, tag):
 
         # winner's id of `None` means the set was not played
         # this happens when both players made it out of pools, etc
-        if _set['winner_id'] == 'None':
+        if _set['winner_id'] == 'None' or _set['loser_id'] == 'None':
             continue
 
         player_is_entrant1 = str(result_player['entrant_id']) == _set['entrant_1_id']
