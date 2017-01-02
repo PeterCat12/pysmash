@@ -78,11 +78,11 @@ class TournamentMethods(BaseTestClass):
 
     def test_tournament_show_sets(self):
         result = self.smash.tournament_show_sets('hidden-bosses-4-0', 'wii-u-singles')
-        self.assertTrue(len(result) == 423)
+        self.assertTrue(len(result) == 312)
 
         self.smash.set_default_event('wii-u-singles')
         result = self.smash.tournament_show_sets('hidden-bosses-4-0')
-        self.assertTrue(len(result) == 423)
+        self.assertTrue(len(result) == 312)
 
     def test_tournamaent_show_sets_other_events(self):
         result = self.smash.tournament_show_sets(tournament_name='kombat-cup-week-4',
@@ -90,7 +90,7 @@ class TournamentMethods(BaseTestClass):
         self.assertTrue(len(result) == 255)
         result = self.smash.tournament_show_sets(tournament_name='hidden-bosses-4-0',
                                                  event='wii-u-doubles')
-        self.assertTrue(len(result) == 95)
+        self.assertTrue(len(result) == 76)
 
     def test_tournament_show_players(self):
         with self.assertRaises(ValidationError) as context:
@@ -155,7 +155,7 @@ class TournamentMethods(BaseTestClass):
 
     def test_bracket_show_sets(self):
         result = self.smash.bracket_show_sets(225024)
-        self.assertTrue(len(result) == 47)
+        self.assertTrue(len(result) == 46)
 
     def test_tournament_show_events(self):
         result = self.smash.tournament_show_events('hidden-bosses-4-0')
@@ -185,7 +185,6 @@ class TournamentMethods(BaseTestClass):
     def test_tournament_show_head_to_head(self):
         results = self.smash.tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada',
                                                           'wii-u-singles')
-        print(results)
         self.assertTrue(len(results['sets']) == 1)
         self.assertTrue(results['sets'][0]['opponent_info']['tag'].lower() == 'hamada')
 

@@ -70,6 +70,8 @@ smash = pysmash.SmashGG()
   print(events)
 
   # Shows a complete list of sets given tournament and event names
+  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.)
   sets = smash.tournament_show_sets('hidden-bosses-4-0', 'wii-u-singles')
   print(sets) # note: result might be VERY large for larger tournaments.
 
@@ -82,10 +84,14 @@ smash = pysmash.SmashGG()
   print(brackets)
 
   # Shows player info and a list of every set that player competed in given tournament and event names
+  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.)
   player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
   print(player_sets)
 
   #Show sets between two players for a given tournament and event names
+  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.)
   player_head_to_head = smash.tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada', 'wii-u-singles')
   print(player_head_to_head)
 
@@ -115,6 +121,8 @@ import pysmash
   print(bracket_players)
 
   # show played sets for a bracket
+  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.)
   brackets = smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
   sets =  self.smash.bracket_show_sets(brackets['bracket_ids'][0]) # <- bracket_id
   # sets = self.smash.bracket_show_sets(225024) # <- if you know the id before hand
@@ -254,6 +262,9 @@ so I encourage you to run tests individually and not very often.
   ...
 ]
 ```
+
+**Notes:**
+- This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set fed into another bracket.)
 
 **Method Signature:**
 `tournament_show_head_to_head('hidden-bosses-4-0', 'giant', 'hamada', 'wii-u-singles')`

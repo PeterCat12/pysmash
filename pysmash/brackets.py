@@ -119,6 +119,12 @@ def _filter_set_response(response):
         if 'preview' in str((bracket_set['id'])):
             break
 
+        winner_score = bracket_set.get('entrant1Score', None)
+        loser_score = bracket_set.get('entrant2Score', None)
+
+        if winner_score is None or loser_score is None:
+            continue
+
         _set = _get_set_from_bracket(bracket_set, is_final_bracket)
         results_sets.append(_set)
 
