@@ -78,19 +78,30 @@ class TournamentMethods(BaseTestClass):
 
     def test_tournament_show_sets(self):
         result = self.smash.tournament_show_sets('hidden-bosses-4-0', 'wii-u-singles')
-        self.assertTrue(len(result) == 312)
+        self.assertTrue(len(result) == 244)
+
+        # test that Dom only played 6 matches
+        count = 0
+        for _set in result:
+            if _set['entrant_1_id'] == '321247' or _set['entrant_2_id'] == '321247':
+                count = count + 1
+        self.assertTrue(count, 6)
+
+        result = self.smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
+        self.assertTrue(len(result['sets']), 6)
+        self.assertTrue(len(result['sets']), count)
 
         self.smash.set_default_event('wii-u-singles')
         result = self.smash.tournament_show_sets('hidden-bosses-4-0')
-        self.assertTrue(len(result) == 312)
+        self.assertTrue(len(result) == 244)
 
     def test_tournamaent_show_sets_other_events(self):
         result = self.smash.tournament_show_sets(tournament_name='kombat-cup-week-4',
                                                  event='mkxl')
-        self.assertTrue(len(result) == 255)
+        self.assertTrue(len(result) == 212)
         result = self.smash.tournament_show_sets(tournament_name='hidden-bosses-4-0',
                                                  event='wii-u-doubles')
-        self.assertTrue(len(result) == 76)
+        self.assertTrue(len(result) == 57)
 
     def test_tournament_show_players(self):
         with self.assertRaises(ValidationError) as context:
