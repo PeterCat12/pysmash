@@ -1,4 +1,4 @@
-from pysmash import tournaments, brackets, exceptions
+from pysmash import tournaments, brackets, exceptions, api
 
 
 class SmashGG(object):
@@ -84,3 +84,23 @@ class SmashGG(object):
     def set_show(self, set_id, filter_response=True):
         """Shows a set given it's id"""
         return brackets.specific_set(set_id, filter_response)
+
+    def show(self, object_type, object_id, object_key, filter_response=True):
+        """Shows an object given it's id"""
+        uri = '/{}/{}'.format(object_type, object_id)
+        response = api.get(uri)
+        if filter_response:
+            response = self._filter_object_response(response, object_key)
+
+        return response
+
+    def _filter_object_response(self, response, object_key):
+        entities = response.get('entities', None)
+        if entities is None:
+            return []
+
+        object = response['entities'].get(object_key, None)
+        if object is None:
+            return []
+
+        return object
