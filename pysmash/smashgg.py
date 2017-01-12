@@ -79,3 +79,11 @@ class SmashGG(object):
         if event == '':
             event = self.event
         return event
+
+    # def show(self, object_type, object_id)
+    # check if type is legit
+    # make the uri
+    # call api.get
+    # filter response
+    # make dic out of response
+    # return
