@@ -80,10 +80,7 @@ class SmashGG(object):
             event = self.event
         return event
 
-    # def show(self, object_type, object_id)
-    # check if type is legit
-    # make the uri
-    # call api.get
-    # filter response
-    # make dic out of response
-    # return
+    #other endpoints
+    def set_show(self, set_id, filter_response=True):
+        """Shows a set given it's id"""
+        return brackets.specific_set(set_id, filter_response)

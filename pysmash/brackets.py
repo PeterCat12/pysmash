@@ -1,6 +1,7 @@
 from pysmash import api, utils, exceptions
 
 BRACKET_URL = '/phase_group/'
+SET_URL = '/set/'
 VALID_BRACKET_PARAMS = ['sets', 'entrants']
 
 
@@ -25,6 +26,15 @@ def sets(bracket_id, filter_response=True):
 
     return response
 
+def specific_set(set_id, filter_response=True):
+    uri = SET_URL + str(set_id)
+
+    response = api.get(uri)
+
+    if filter_response:
+        response = _filter_specific_set_response(response)
+
+    return response
 
 def sets_played_by_player(bracket_id, tag):
     try:
@@ -91,7 +101,6 @@ def _filter_player_response(response):
 
 def _filter_set_response(response):
     entities = response.get('entities', None)
-
     if entities is None:
         return []
 
@@ -116,6 +125,22 @@ def _filter_set_response(response):
 
     return results_sets
 
+def _filter_specific_set_response(response, is_final_bracket=True):
+    entities = response.get('entities', None)
+    if entities is None:
+        return []
+
+    bracket_sets = response['entities'].get('sets', None)
+    if bracket_sets is None:
+        return []
+
+    results_sets = []
+
+    _set, success = _get_set_from_bracket(bracket_sets, is_final_bracket)
+    if success:
+        return _set
+
+    return results_sets
 
 def _is_final_bracket(groups):
     is_final_bracket = False
