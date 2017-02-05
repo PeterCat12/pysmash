@@ -155,10 +155,6 @@ def _get_set_from_bracket(bracket_set, is_final_bracket):
     if bracket_set['entrant1Id'] is None or bracket_set['entrant2Id'] is None:
         return None, False
 
-    # winner's id of `None` or loser's id of `None` means the set was not played
-    if bracket_set['winnerId'] is None or bracket_set['loserId'] is None:
-        return None, False
-
     _set = {
         'id': str(bracket_set['id']),  # make all IDS ints?
         'entrant_1_id': str(bracket_set['entrant1Id']),
