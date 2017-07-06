@@ -50,7 +50,7 @@ smash = pysmash.SmashGG()
   print(tournament_with_event_information)
 
   #show meta information with all three params
-  tournament_full_meta = smash.tournament_show("hidden-bosses-4-0", ['event', 'groups', 'event'])
+  tournament_full_meta = smash.tournament_show("hidden-bosses-4-0", ['phase', 'groups', 'event'])
   print(tournament_full_meta)
 
 ```
