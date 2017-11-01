@@ -11,5 +11,5 @@ setup(name="pysmash",
       ],
       install_requires=[
         'requests==2.12.1',
-    ],
+      ],
 )
