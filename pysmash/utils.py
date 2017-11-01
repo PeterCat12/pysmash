@@ -24,3 +24,8 @@ def get_subfield(_dict, field, subField):
     if _dict[field] is not None:
         return _dict[field].get(subField, '')
     return ''
+
+
+def strip_and_split_string(_string, strip_char, split_char):
+    _string = _string.strip(strip_char)
+    return _string.split(split_char)

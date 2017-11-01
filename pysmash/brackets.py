@@ -154,13 +154,26 @@ def _get_player_from_entrant(entrant):
     participant_id = str(entrant['participantIds'][0])
     player_id = str(entrant['playerIds'][participant_id])
     player_dict = entrant['mutations']['players'][player_id]
-    participant_dict = entrant['mutations']['participants'][participant_id]
+
+    player_name = player_dict.get('name', '')
+    if player_name is None:  # Clowns at Smashgg.
+        player_name = ''
+
+    player_name_parts = utils.strip_and_split_string(
+        player_name, strip_char=" ", split_char=" ")
+
+    fname = player_name_parts[0]
+
+    if len(player_name_parts) > 1:
+        lname = player_name_parts[1]
+    else:
+        lname = ''
 
     return {
         'entrant_id': entrant['id'],
         'tag': player_dict['gamerTag'],
-        'fname': utils.get_subfield(participant_dict, 'contactInfo', 'nameFirst'),
-        'lname': utils.get_subfield(participant_dict, 'contactInfo', 'nameLast'),
+        'fname': fname,
+        'lname': lname,
         'state': player_dict['state'],
         'country': player_dict['country'],
         'final_placement': entrant['finalPlacement'],
