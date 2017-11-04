@@ -1,5 +1,7 @@
 # pysmash
 
+[![Build Status](http://drone.peterballz.com/api/badges/PeterCat12/pysmash/status.svg)](http://drone.peterballz.com/PeterCat12/pysmash)
+
 Pysmash provides python bindings for the
 [Smash.gg!](https://smash.gg) [API](https://help.smash.gg/hc/en-us/articles/217471947-API-Access).
 
