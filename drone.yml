@@ -1,0 +1,8 @@
+pipeline:
+  build:
+    image: python:3.5.2
+    commands:
+      - python tests.py
+    when:
+      branch: [ master ]
+      event: [push, pull_request]
