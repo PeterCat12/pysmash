@@ -15,18 +15,18 @@ def players(bracket_id, filter_response=True):
     return response
 
 
-def sets(bracket_id, filter_response=True):
+def sets(bracket_id, filter_response=True, filter_unplayed=True):
     uri = BRACKET_URL + str(bracket_id)
 
     response = api.get(uri, VALID_BRACKET_PARAMS)
 
     if filter_response:
-        response = _filter_set_response(response)
+        response = _filter_set_response(response, filter_unplayed)
 
     return response
 
 
-def sets_played_by_player(bracket_id, tag):
+def sets_played_by_player(bracket_id, tag, filter_unplayed=True):
     try:
         tag = str(tag)
         tag = tag.lower()
@@ -37,10 +37,10 @@ def sets_played_by_player(bracket_id, tag):
     uri = BRACKET_URL + str(bracket_id)
 
     response = api.get(uri, VALID_BRACKET_PARAMS)
-    return _filter_sets_given_player(response, tag)
+    return _filter_sets_given_player(response, tag, filter_unplayed)
 
 
-def _filter_sets_given_player(response, tag):
+def _filter_sets_given_player(response, tag, filter_unplayed=True):
 
     result_player = None
     players = _filter_player_response(response)
@@ -52,7 +52,7 @@ def _filter_sets_given_player(response, tag):
         return []
 
     player_sets = []
-    sets = _filter_set_response(response)
+    sets = _filter_set_response(response, filter_unplayed)
 
     # grab sets the player was involved in
     for _set in sets:
@@ -89,7 +89,7 @@ def _filter_player_response(response):
     return players
 
 
-def _filter_set_response(response):
+def _filter_set_response(response, filter_unplayed=True):
     entities = response.get('entities', None)
 
     if entities is None:
@@ -110,7 +110,7 @@ def _filter_set_response(response):
         if 'preview' in str((bracket_set['id'])):
             break
 
-        _set, success = _get_set_from_bracket(bracket_set, is_final_bracket)
+        _set, success = _get_set_from_bracket(bracket_set, is_final_bracket, filter_unplayed)
         if success:
             results_sets.append(_set)
 
@@ -125,13 +125,14 @@ def _is_final_bracket(groups):
     return is_final_bracket
 
 
-def _get_set_from_bracket(bracket_set, is_final_bracket):
+def _get_set_from_bracket(bracket_set, is_final_bracket, filter_unplayed=True):
     # ignore bye sets
     if bracket_set['entrant1Id'] is None or bracket_set['entrant2Id'] is None:
         return None, False
 
     # winner's id of `None` or loser's id of `None` means the set was not played
-    if bracket_set['winnerId'] is None or bracket_set['loserId'] is None:
+    # if not filtering, will return winner and loser id of 'None'
+    if filter_unplayed and (bracket_set['winnerId'] is None or bracket_set['loserId'] is None):
         return None, False
 
     _set = {
