@@ -132,8 +132,14 @@ def _get_set_from_bracket(bracket_set, is_final_bracket, filter_unplayed=True):
 
     # winner's id of `None` or loser's id of `None` means the set was not played
     # if not filtering, will return winner and loser id of 'None'
-    if filter_unplayed and (bracket_set['winnerId'] is None or bracket_set['loserId'] is None):
-        return None, False
+    if filter_unplayed:
+        if bracket_set['winnerId'] is None or bracket_set['loserId'] is None:
+            return None, False
+
+    #we want unplayed sets, not sets that will never be played (that feed into other brackets without being played)
+    elif filter_unplayed is False:
+        if bracket_set['unreachable'] is True:
+            return None,False
 
     _set = {
         'id': str(bracket_set['id']),  # make all IDS ints?
