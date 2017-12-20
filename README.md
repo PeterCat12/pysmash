@@ -72,8 +72,8 @@ smash = pysmash.SmashGG()
   print(events)
 
   # Shows a complete list of sets given tournament and event names
-  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
-  # potentially fed into another bracket.)
+  # By default, this method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.); these sets can be viewed by passing False for filter_unplayed
   sets = smash.tournament_show_sets('hidden-bosses-4-0', 'wii-u-singles')
   print(sets) # note: result might be VERY large for larger tournaments.
 
@@ -86,8 +86,8 @@ smash = pysmash.SmashGG()
   print(brackets)
 
   # Shows player info and a list of every set that player competed in given tournament and event names
-  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
-  # potentially fed into another bracket.)
+  # By default, this method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.); these sets can be viewed by passing False for filter_unplayed
   player_sets = smash.tournament_show_player_sets('hidden-bosses-4-0', 'DOM', 'wii-u-singles')
   print(player_sets)
 
@@ -122,9 +122,9 @@ import pysmash
   # bracket_players = smash.bracket_show_players(224997) # <- if you know the id before hand
   print(bracket_players)
 
-  # show played sets for a bracket
-  # This method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
-  # potentially fed into another bracket.)
+  # show sets for a bracket
+  # By default, this method ignores sets without a recorded score (Smash.gg "oddity". Either the set was not played or the set
+  # potentially fed into another bracket.); these sets can be viewed by passing False for filter unplayed
   brackets = smash.tournament_show_event_brackets('hidden-bosses-4-0', 'wii-u-singles')
   sets =  self.smash.bracket_show_sets(brackets['bracket_ids'][0]) # <- bracket_id
   # sets = self.smash.bracket_show_sets(225024) # <- if you know the id before hand
