@@ -15,18 +15,18 @@ def players(bracket_id, filter_response=True):
     return response
 
 
-def sets(bracket_id, filter_response=True, filter_unplayed=True):
+def sets(bracket_id, filter_response=True, filter_completed=False, filter_current=True, filter_future=True):
     uri = BRACKET_URL + str(bracket_id)
 
     response = api.get(uri, VALID_BRACKET_PARAMS)
 
     if filter_response:
-        response = _filter_set_response(response, filter_unplayed)
+        response = _filter_set_response(response, filter_completed, filter_current, filter_future)
 
     return response
 
 
-def sets_played_by_player(bracket_id, tag, filter_unplayed=True):
+def sets_played_by_player(bracket_id, tag, filter_completed=False, filter_current=True, filter_future=True):
     try:
         tag = str(tag)
         tag = tag.lower()
@@ -37,10 +37,10 @@ def sets_played_by_player(bracket_id, tag, filter_unplayed=True):
     uri = BRACKET_URL + str(bracket_id)
 
     response = api.get(uri, VALID_BRACKET_PARAMS)
-    return _filter_sets_given_player(response, tag, filter_unplayed)
+    return _filter_sets_given_player(response, tag, filter_completed, filter_current, filter_future)
 
 
-def _filter_sets_given_player(response, tag, filter_unplayed=True):
+def _filter_sets_given_player(response, tag, filter_completed=False, filter_current=True, filter_future=True):
 
     result_player = None
     players = _filter_player_response(response)
@@ -52,7 +52,7 @@ def _filter_sets_given_player(response, tag, filter_unplayed=True):
         return []
 
     player_sets = []
-    sets = _filter_set_response(response, filter_unplayed)
+    sets = _filter_set_response(response, filter_completed, filter_current, filter_future)
 
     # grab sets the player was involved in
     for _set in sets:
@@ -60,10 +60,12 @@ def _filter_sets_given_player(response, tag, filter_unplayed=True):
         player_is_entrant2 = str(result_player['entrant_id']) == _set['entrant_2_id']
         if player_is_entrant1 or player_is_entrant2:
             _set['player_id'] = result_player['entrant_id']
-            if player_is_entrant1:
+            if player_is_entrant1 and not _set['entrant_2_id'] == 'None':
                 _set['opponent_id'] = int(_set['entrant_2_id'])
-            elif player_is_entrant2:
+            elif player_is_entrant2 and not _set['entrant_1_id'] == 'None':
                 _set['opponent_id'] = int(_set['entrant_1_id'])
+            else:
+                _set['opponent_id'] = str(None)
             player_sets.append(_set)
 
     # grab information about player's opponents
@@ -89,7 +91,7 @@ def _filter_player_response(response):
     return players
 
 
-def _filter_set_response(response, filter_unplayed=True):
+def _filter_set_response(response, filter_completed=False, filter_current=True, filter_future=True):
     entities = response.get('entities', None)
 
     if entities is None:
@@ -110,7 +112,7 @@ def _filter_set_response(response, filter_unplayed=True):
         if 'preview' in str((bracket_set['id'])):
             break
 
-        _set, success = _get_set_from_bracket(bracket_set, is_final_bracket, filter_unplayed)
+        _set, success = _get_set_from_bracket(bracket_set, is_final_bracket, filter_completed, filter_current, filter_future)
         if success:
             results_sets.append(_set)
 
@@ -124,22 +126,27 @@ def _is_final_bracket(groups):
         is_final_bracket = True
     return is_final_bracket
 
-
-def _get_set_from_bracket(bracket_set, is_final_bracket, filter_unplayed=True):
-    # ignore bye sets
-    if bracket_set['entrant1Id'] is None or bracket_set['entrant2Id'] is None:
+#3 endpoints - completed sets, current sets, and future sets. We never want unreachable sets.
+def _get_set_from_bracket(bracket_set, is_final_bracket, filter_completed=False, filter_current=True, filter_future=True):
+    # ignore unreachable sets
+    if bracket_set['unreachable'] is True:
         return None, False
 
-    # winner's id of `None` or loser's id of `None` means the set was not played
-    # if not filtering, will return winner and loser id of 'None'
-    if filter_unplayed:
-        if bracket_set['winnerId'] is None or bracket_set['loserId'] is None:
+    # filter completed means we do not want already completed sets
+    if filter_completed:
+        if not bracket_set['winnerId'] is None and not bracket_set['loserId'] is None:
             return None, False
 
-    #we want unplayed sets, not sets that will never be played (that feed into other brackets without being played)
-    elif filter_unplayed is False:
-        if bracket_set['unreachable'] is True:
-            return None,False
+    # filter future means we do not want sets that are not ready or completed - we do not want sets whose participants are not established
+    if filter_future:
+        if bracket_set['entrant1Id'] is None or bracket_set['entrant2Id'] is None:
+            return None, False
+
+    # filter current means we do not want sets that have yet to be played and that have its participants established
+    # a set is current if both entrants are set but there is no winner
+    if filter_current:
+        if not bracket_set['entrant1Id'] is None and not bracket_set['entrant2Id'] is None and bracket_set['winnerId'] is None:
+            return None, False
 
     _set = {
         'id': str(bracket_set['id']),  # make all IDS ints?
