@@ -1,3 +1,12 @@
+# notifier
+
+This branch includes a "notifier" for use with an ongoing smash.gg bracket. 
+To use, simply run the notifier.py and follow the directions displayed.
+The format for tournaments/events is as follows:
+https://smash.gg/tournament/genesis-5/events/melee-singles
+
+The tournament name is what follows /tournament/, and the event name is what follows /events/.
+
 # pysmash
 
 [![Build Status](http://drone.peterballz.com/api/badges/PeterCat12/pysmash/status.svg)](http://drone.peterballz.com/PeterCat12/pysmash)
