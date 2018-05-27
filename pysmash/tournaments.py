@@ -163,7 +163,7 @@ def _append_groups(response, result):
             "group_id": group['id'],
             'phase_id': group['phaseId'],
             'title': group['title'],
-            'winners_target_phase': group['winnersTargetPhaseId'],
+            'winners_target_phase': group.get('winnersTargetPhaseId', None),
         }
         result['groups'].append(group_dict)
     return result
