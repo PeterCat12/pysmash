@@ -38,13 +38,13 @@ def show_with_brackets(tournament_name, event, tournament_params=[], ):
     return utils.merge_two_dicts(tournament, brackets)
 
 
-def show_sets(tournament_name, event, tournament_params=[]):
+def show_sets(tournament_name, event, tournament_params=[], filter_completed=False, filter_current=True, filter_future=True):
     """Returns all sets from a tournament"""
     tournament = show_with_brackets(tournament_name, event, tournament_params)
 
     results = []
     for bracket_id in tournament['bracket_ids']:
-        bracket_sets = brackets.sets(bracket_id)
+        bracket_sets = brackets.sets(bracket_id, True, filter_completed, filter_current, filter_future)
         for _set in bracket_sets:
             if len(_set) > 0:
                 results.append(_set)
@@ -64,7 +64,7 @@ def show_players(tournament_name, event_name, tournament_params=[]):
     return list({v['player_id']: v for v in results}.values())
 
 
-def show_player_sets(tournament_name, event, player_tag):
+def show_player_sets(tournament_name, event, player_tag, filter_completed=False, filter_current=True, filter_future=True):
     """Returns all players from a tournament"""
     tournament = show_with_brackets(tournament_name, event)
 
@@ -72,7 +72,7 @@ def show_player_sets(tournament_name, event, player_tag):
     bracket_sets = []
 
     for bracket_id in tournament['bracket_ids']:
-        player_sets = brackets.sets_played_by_player(bracket_id, player_tag)
+        player_sets = brackets.sets_played_by_player(bracket_id, player_tag, filter_completed, filter_current, filter_future)
         if len(player_sets) == 0:
             continue
 
