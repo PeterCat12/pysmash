@@ -171,6 +171,7 @@ def _get_player_from_entrant(entrant):
 
     return {
         'entrant_id': entrant['id'],
+        'player_id': player_id,
         'tag': player_dict['gamerTag'],
         'fname': fname,
         'lname': lname,

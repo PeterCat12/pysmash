@@ -61,7 +61,7 @@ def show_players(tournament_name, event_name, tournament_params=[]):
         bracket_players = brackets.players(bracket_id)
         for player in bracket_players:
             results.append(player)
-    return list({v['tag']: v for v in results}.values())
+    return list({v['player_id']: v for v in results}.values())
 
 
 def show_player_sets(tournament_name, event, player_tag):
