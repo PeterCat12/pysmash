@@ -1,4 +1,5 @@
-from pysmash import tournaments, brackets, exceptions
+from pysmash.core import exceptions
+from pysmash.v1 import brackets, tournaments
 
 
 class SmashGG(object):

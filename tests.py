@@ -1,7 +1,7 @@
 import unittest
 from pysmash import SmashGG
-from pysmash.brackets import _filter_set_response
-from pysmash.exceptions import ValidationError
+from pysmash.v1.brackets import _filter_set_response
+from pysmash.core.exceptions import ValidationError
 
 
 class BaseTestClass(unittest.TestCase):

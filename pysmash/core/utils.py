@@ -1,4 +1,4 @@
-from pysmash import exceptions
+from pysmash.core import exceptions
 
 
 def merge_two_dicts(x, y):

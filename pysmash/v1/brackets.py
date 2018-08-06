@@ -1,4 +1,5 @@
-from pysmash import api, utils, exceptions
+from pysmash.core import exceptions, utils
+from pysmash.api import api
 
 BRACKET_URL = '/phase_group/'
 VALID_BRACKET_PARAMS = ['sets', 'entrants']
