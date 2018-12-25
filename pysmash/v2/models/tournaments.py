@@ -26,10 +26,18 @@ class Tournament(SmashGGObject):
         self.short_slug = kwargs.get('shortSlug')
 
         # Expands
-        self.events = [Event(**event) for event in kwargs['expands'].get(Tournament.EXPAND_EVENTS, [])]
-        self.phases = [Phase(**phase) for phase in kwargs['expands'].get(Tournament.EXPAND_PHASES, [])]
-        self.groups = [Group(**group) for group in kwargs['expands'].get(Tournament.EXPAND_GROUPS, [])]
-        self.stations = [Station(**station) for station in kwargs['expands'].get(Tournament.EXPAND_STATIONS, [])]
+        self.events = [
+            Event(**event) for event in kwargs.get('expands', {}).get(Tournament.EXPAND_EVENTS, [])
+        ]
+        self.phases = [
+            Phase(**phase) for phase in kwargs.get('expands', {}).get(Tournament.EXPAND_PHASES, [])
+        ]
+        self.groups = [
+            Group(**group) for group in kwargs.get('expands', {}).get(Tournament.EXPAND_GROUPS, [])
+        ]
+        self.stations = [
+            Station(**station) for station in kwargs.get('expands', {}).get(Tournament.EXPAND_STATIONS, [])
+        ]
 
     def events(self):
         return self.events
@@ -42,6 +50,8 @@ class Tournament(SmashGGObject):
 
     def stations(self):
         return self.stations
+
+    
 
 
 

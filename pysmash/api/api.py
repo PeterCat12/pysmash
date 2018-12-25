@@ -1,14 +1,17 @@
 from pysmash.core import exceptions
 import requests
+from urllib.parse import urlencode
 
 
 SMASHGG_API_URL = 'api.smash.gg'
 
 
-def get(uri, params=[]):
+def get(uri, params=None):
+    if params is None:
+        params = {}
+
     """"Performs a get request and return the contents of the response"""
-    params = _prepare_params(params)
-    url = "https://%s/%s" % (SMASHGG_API_URL, uri + params)
+    url = "https://%s/%s" % (SMASHGG_API_URL, uri + '?' + urlencode(params, True))
 
     r = requests.get(url)
 
@@ -16,16 +19,3 @@ def get(uri, params=[]):
     if r.status_code == 200:
         return data
     raise exceptions.ResponseError(data['message'], r.status_code)
-
-
-def _prepare_params(params):
-    """return params as SmashGG friendly query string"""
-    query_string = ''
-
-    if len(params) == 0:
-        return query_string
-
-    prefix = '?expand[]='
-    query_string = prefix + '&expand[]='.join(params)
-
-    return query_string

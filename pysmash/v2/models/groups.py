@@ -1,5 +1,7 @@
 from pysmash.v2.models.base.smashgg_objects import SmashGGObject
 from pysmash.v2.models.sets import Set
+from pysmash.v2.support.contants import URI_GROUP
+from pysmash.api import api
 
 
 class Group(SmashGGObject):
@@ -23,6 +25,21 @@ class Group(SmashGGObject):
         self.percentageComplete = kwargs.get('percentageComplete')
 
         # Expands
-        self.sets = [Set(**set) for set in kwargs['expands'].get('sets')]
+        self.sets = [Set(**set) for set in kwargs.get('expands', {}).get('sets')]
+
+    # To get the standings for a single bracket, use https://
+    #     api.smash.gg / phase_group / 323872?expand[] = standings & expand[] = seeds
+    def standings(self):
+        data = api.get(
+            URI_GROUP + self.id,
+            {
+                'expand[]': [
+                    'standings',
+                    'seeds'
+                ]
+            }
+        )
+
+        return data
 
 
