@@ -1,5 +1,6 @@
 from pysmash.v2.support.contants import URI_TOURNAMENT, URI_GROUP, URI_EVENT
 from pysmash.api import api
+from typing import Dict
 
 # model imports
 from pysmash.v2.models.groups import Group

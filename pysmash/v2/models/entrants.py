@@ -6,7 +6,7 @@ from pysmash.v2.models.players import Player
 class Entrant(SmashGGObject):
 
     def __init__(self, **kwargs):
-        SmashGGObject.__init__(**kwargs)
+        SmashGGObject.__init__(self, **kwargs)
         self.id = kwargs.get('id')
         self.eventId = kwargs.get('eventId')
         self.name = kwargs.get('name')

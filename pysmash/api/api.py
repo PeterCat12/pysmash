@@ -10,8 +10,12 @@ def get(uri, params=None):
     if params is None:
         params = {}
 
+    print(params)
+    print(urlencode(params, True))
     """"Performs a get request and return the contents of the response"""
     url = "https://%s/%s" % (SMASHGG_API_URL, uri + '?' + urlencode(params, True))
+    print(url)
+    print("we printed everything.")
 
     r = requests.get(url)
 

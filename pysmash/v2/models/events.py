@@ -15,7 +15,7 @@ class Event(SmashGGObject):
     EXPAND_KEYS = [EXPAND_PHASE, EXPAND_GROUPS]
 
     def __init__(self, **kwargs):
-        SmashGGObject.__init__(**kwargs)
+        SmashGGObject.__init__(self, **kwargs)
         self.id = kwargs.get('id')
         self.tournamentId = kwargs.get('tournamentId')
         self.videogameId = kwargs.get('videogameId')

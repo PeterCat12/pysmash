@@ -5,7 +5,7 @@ from pysmash.v2.models.losses import Loss
 class EventStanding(SmashGGObject):
 
     def __init__(self, **kwargs):
-        SmashGGObject.__init__(**kwargs)
+        SmashGGObject.__init__(self, **kwargs)
         self.id = kwargs.get('id')
         self.groupId = kwargs.get('groupId')
         self.entityType = kwargs.get('entityType')

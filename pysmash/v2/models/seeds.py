@@ -7,7 +7,7 @@ from pysmash.v2.models.entrants import Entrant
 class Seed(SmashGGObject):
 
     def __init__(self, **kwargs):
-        SmashGGObject.__init__(**kwargs)
+        SmashGGObject.__init__(self, **kwargs)
         self.id = kwargs.get('id')
         self.phaseId = kwargs.get('phaseId')
         self.entrantId = kwargs.get('entrantId')

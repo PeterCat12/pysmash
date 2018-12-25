@@ -14,7 +14,7 @@ class Group(SmashGGObject):
     EXPAND_KEYS = [EXPAND_SETS, EXPAND_ENTRANTS, EXPAND_STANDINGS, EXPAND_SEEDS]
 
     def __init__(self, **kwargs):
-        SmashGGObject.__init__(**kwargs)
+        SmashGGObject.__init__(self, **kwargs)
 
         # Attributes
         self.id = kwargs.get('id')
