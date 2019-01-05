@@ -1,9 +1,11 @@
 from pysmash.v2.models.base.smashgg_objects import SmashGGObject
 
 from pysmash.v2.models.events import Event
-from pysmash.v2.models.phase import Phase
+from pysmash.v2.models.phases import Phase
 from pysmash.v2.models.groups import Group
 from pysmash.v2.models.stations import Station
+
+from pysmash.api import api
 
 
 class Tournament(SmashGGObject):
@@ -27,29 +29,39 @@ class Tournament(SmashGGObject):
 
         # Expands
         self.events = [
-            Event(**event) for event in kwargs.get('expands', {}).get(Tournament.EXPAND_EVENTS, [])
+            Event(**event) for event in kwargs.get('expands', {}).get(self.EXPAND_EVENTS, [])
         ]
         self.phases = [
-            Phase(**phase) for phase in kwargs.get('expands', {}).get(Tournament.EXPAND_PHASES, [])
+            Phase(**phase) for phase in kwargs.get('expands', {}).get(self.EXPAND_PHASES, [])
         ]
         self.groups = [
-            Group(**group) for group in kwargs.get('expands', {}).get(Tournament.EXPAND_GROUPS, [])
+            Group(**group) for group in kwargs.get('expands', {}).get(self.EXPAND_GROUPS, [])
         ]
         self.stations = [
-            Station(**station) for station in kwargs.get('expands', {}).get(Tournament.EXPAND_STATIONS, [])
+            Station(**station) for station in kwargs.get('expands', {}).get(self.EXPAND_STATIONS, [])
         ]
 
-    def events(self):
-        return self.events
+    def expand_events(self):
+        return self.expand(self.EXPAND_EVENTS)
 
-    def phases(self):
-        return self.phases
+    def expand_phases(self):
+        return self.expand(self.EXPAND_PHASES)
 
-    def groups(self):
-        return self.groups
+    def expand_groups(self):
+        return self.expand(self.EXPAND_GROUPS)
 
-    def stations(self):
-        return self.stations
+    def expand_stations(self):
+        return self.expand(self.EXPAND_STATIONS)
+
+    def expand(self, params):
+        params = SmashGGObject._format_expands(params)
+
+        if self.slug is None:
+            raise ValueError("Cannot fetch expand attributes as the `slug` attribute is not set on event instance.")
+
+        data = api.get(uri=self.slug, params=self._format_expands(params))
+        self._set_expands(params['expand[]'], data)
+
 
     
 

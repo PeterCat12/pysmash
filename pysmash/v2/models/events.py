@@ -1,5 +1,5 @@
 from pysmash.v2.models.base.smashgg_objects import SmashGGObject
-from pysmash.v2.models.phase import Phase
+from pysmash.v2.models.phases import Phase
 from pysmash.v2.models.groups import Group
 from pysmash.v2.models.event_standings import EventStanding
 from pysmash.v2.models.entrants import Entrant
@@ -23,18 +23,27 @@ class Event(SmashGGObject):
         self.typeDisplayStr = kwargs.get('typeDisplayStr')
 
         # Expands
-        self.phases = [Phase(**phase) for phase in kwargs.get('expands', {}).get('phase', [])]
-        self.groups = [Group(**group) for group in kwargs.get('expands', {}).get('groups', [])]
+        self.phase = [Phase(**phase) for phase in kwargs.get('expands', {}).get(self.EXPAND_PHASE, [])]
+        self.groups = [Group(**group) for group in kwargs.get('expands', {}).get(self.EXPAND_GROUPS, [])]
 
         # Standings and Entrants
         self.standings = []
         self.entrants = []
 
-    def phases(self):
-        return self.phases
+    def expand_phase(self):
+        return self.expand(self.EXPAND_PHASE)
 
-    def groups(self):
-        return self.groups
+    def expand_groups(self):
+        return self.expand(self.EXPAND_GROUPS)
+
+    def expand(self, params):
+        params = SmashGGObject._format_expands(params)
+
+        if self.slug is None:
+            raise ValueError("Cannot fetch expand attributes as the `slug` attribute is not set on event instance.")
+
+        data = api.get(uri=self.slug, params=self._format_expands(params))
+        self._set_expands(params['expand[]'], data)
 
     def standings(self, page=1, per_page=25):
         data = api.get(

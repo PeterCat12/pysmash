@@ -3,7 +3,6 @@ from pysmash.v2.models.sets import Set
 from pysmash.v2.support.contants import URI_GROUP
 from pysmash.api import api
 
-
 class Group(SmashGGObject):
 
     EXPAND_SETS = 'sets'
@@ -25,7 +24,36 @@ class Group(SmashGGObject):
         self.percentageComplete = kwargs.get('percentageComplete')
 
         # Expands
-        self.sets = [Set(**set) for set in kwargs.get('expands', {}).get('sets')]
+        self.sets = [Set(**_set) for _set in kwargs.get('expands', {}).get('sets', [])]
+
+
+    def expand_sets(self):
+        return self.expand(self.EXPAND_SETS)
+
+    def expand_entrants(self):
+        return self.expand(self.EXPAND_ENTRANTS)
+
+    def expand_seeds_and_standings(self):
+        return self.expand([self.EXPAND_STANDINGS, self.EXPAND_SEEDS])
+
+    def expand(self, params):
+        params = SmashGGObject._format_expands(params)
+
+        if self.id is None:
+            raise ValueError("Cannot fetch expand attributes as the `id` attribute is not set on group instance.")
+        uri = URI_GROUP + self.id
+        data = api.get(uri=uri, params=params)
+
+        print(data)
+
+        from pysmash.v2.support.factories import SmashGGObjectFactory
+        for expand in params['expand[]']:
+            result = [
+                SmashGGObjectFactory.factory(key, **expand) for expand in data.get('expands', {}).get(key, [])
+            ]
+            setattr(self, key, result)
+
+
 
     # To get the standings for a single bracket, use https://
     #     api.smash.gg / phase_group / 323872?expand[] = standings & expand[] = seeds
